@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Artikel Organik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#20302A;
+    --ink-soft:#44554D;
+    --paper:#ECE8DA;
+    --paper-deep:#E2DDC9;
+    --card:#F7F5EC;
+    --line:#D3CDB7;
+    --moss:#4F6B47;
+    --moss-deep:#374C31;
+    --mustard:#C6952F;
+    --mustard-deep:#9C7423;
+    --danger:#A5432E;
+    --danger-bg:#F5E4DE;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(32,48,42,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 64px;}
+
+  header.hero{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    padding-bottom:28px;
+    margin-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  header.hero .title-block h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:38px;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  header.hero .title-block p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:540px;
+  }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:8px 16px;
+    font-size:13px;
+    color:var(--moss-deep);
+    font-weight:500;
+    white-space:nowrap;
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--mustard);flex:none;}
+
+  .panel-key{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-bottom:28px;
+    box-shadow:var(--shadow);
+  }
+  .panel-key h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:17px;
+    margin:0 0 4px;
+  }
+  .panel-key .sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 16px;}
+  .panel-key .sub a{color:var(--moss-deep);}
+  .key-grid{
+    display:grid;
+    grid-template-columns:1.6fr 1fr 1fr;
+    gap:14px;
+    align-items:end;
+  }
+  @media (max-width:820px){.key-grid{grid-template-columns:1fr;}}
+
+  label{
+    display:block;
+    font-size:12.5px;
+    font-weight:500;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  input[type=text],input[type=password],select,textarea{
+    width:100%;
+    font-family:'Work Sans',sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+    outline:none;
+  }
+  input[type=text]:focus,input[type=password]:focus,select:focus,textarea:focus{
+    border-color:var(--moss);
+    box-shadow:0 0 0 3px rgba(79,107,71,0.12);
+  }
+  input[type=range]{width:100%;accent-color:var(--moss);}
+
+  main.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:900px){main.grid{grid-template-columns:1fr;}}
+
+  .col{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .col-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 20px;
+    border-bottom:1px solid var(--line);
+  }
+  .col-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:18px;
+    margin:0;
+  }
+  .col-head .count{font-size:12.5px;color:var(--ink-soft);}
+  .col-body{padding:20px;}
+
+  textarea#originalText{min-height:260px;resize:vertical;font-size:14.5px;line-height:1.6;}
+  #outputBox{
+    min-height:260px;
+    max-height:520px;
+    overflow-y:auto;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 18px;
+    font-size:15px;
+    line-height:1.75;
+    white-space:pre-wrap;
+  }
+  #outputBox:empty::before{
+    content:"Hasil artikel organik kamu akan muncul di sini setelah proses generate selesai.";
+    color:var(--ink-soft);
+  }
+  #outputBox[contenteditable=true]:focus{outline:none;border-color:var(--moss);}
+
+  fieldset{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 16px 14px;
+    margin:0 0 16px;
+  }
+  fieldset legend{
+    font-family:'Fraunces',serif;
+    font-size:13.5px;
+    font-weight:500;
+    padding:0 8px;
+    color:var(--moss-deep);
+  }
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  .field-row:last-child{margin-bottom:0;}
+  .field{margin-bottom:12px;}
+  .field:last-child{margin-bottom:0;}
+  .check-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px;font-size:14px;}
+  .check-row:last-child{margin-bottom:0;}
+  .check-row input{margin-top:3px;accent-color:var(--moss);}
+  .check-row span.hint{display:block;color:var(--ink-soft);font-size:12.5px;}
+
+  button{
+    font-family:'Work Sans',sans-serif;
+    font-weight:500;
+    font-size:14px;
+    cursor:pointer;
+    border-radius:8px;
+    border:1px solid var(--line);
+    padding:10px 16px;
+    background:#fff;
+    color:var(--ink);
+  }
+  button:hover{background:var(--paper-deep);}
+  button.primary{
+    width:100%;
+    background:var(--moss);
+    border-color:var(--moss-deep);
+    color:#fff;
+    font-size:15.5px;
+    padding:14px;
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    letter-spacing:.01em;
+  }
+  button.primary:hover{background:var(--moss-deep);}
+  button.primary:disabled{background:#B9C2B4;border-color:#B9C2B4;cursor:not-allowed;}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .btn-row button{flex:1;min-width:110px;font-size:13.5px;padding:9px 10px;}
+
+  .stats-row{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap;}
+  .stat{font-size:12.5px;color:var(--ink-soft);}
+  .stat b{display:block;font-family:'Fraunces',serif;font-size:19px;color:var(--ink);font-weight:600;}
+
+  #statusMsg{
+    margin-top:14px;
+    font-size:13.5px;
+    padding:10px 14px;
+    border-radius:8px;
+    display:none;
+  }
+  #statusMsg.error{display:block;background:var(--danger-bg);color:var(--danger);border:1px solid #E0BCAF;}
+  #statusMsg.loading{display:block;background:#EFEBDA;color:var(--mustard-deep);border:1px solid var(--line);}
+  #statusMsg.ok{display:block;background:#E6EEE1;color:var(--moss-deep);border:1px solid #C7D6BF;}
+
+  footer.note{
+    margin-top:28px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+
+  .ink-divider{
+    height:2px;
+    width:48px;
+    background:var(--mustard);
+    border-radius:2px;
+    margin:0 0 14px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="title-block">
+      <h1>Studio Artikel Organik</h1>
+      <p>Tempel artikel atau teks mentah kamu, atur gaya penulisan, lalu biarkan tool ini menyusun ulang jadi artikel yang terasa manusiawi, nyaman dibaca, dan tetap ramah SEO.</p>
+    </div>
+    <span class="badge"><span class="dot"></span> Ditenagai Gemini · Google AI Studio</span>
+  </header>
+
+  <section class="panel-key">
+    <h2>Koneksi ke Google AI Studio</h2>
+    <p class="sub">Butuh API key gratis dari Google AI Studio. Ambil di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> — key hanya disimpan sementara di browser kamu selama sesi ini, tidak dikirim ke server manapun selain Google.</p>
+    <div class="key-grid">
+      <div class="field">
+        <label for="apiKey">API Key Gemini</label>
+        <input type="password" id="apiKey" placeholder="Tempel API key di sini (AIza...)">
+      </div>
+      <div class="field">
+        <label for="modelSelect">Model</label>
+        <select id="modelSelect">
+          <option value="gemini-flash-latest" selected>Gemini Flash (terbaru otomatis)</option>
+          <option value="gemini-3.5-flash">Gemini 3.5 Flash — cepat & pintar</option>
+          <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite — paling hemat</option>
+          <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro — paling detail</option>
+          <option value="custom">Model lain (isi manual)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="temperature">Tingkat kreativitas (<span id="tempOut">0.9</span>)</label>
+        <input type="range" id="temperature" min="0.3" max="1.3" step="0.1" value="0.9">
+      </div>
+    </div>
+    <div class="field" id="customModelWrap" style="display:none;margin-top:12px;">
+      <label for="customModel">Nama model kustom</label>
+      <input type="text" id="customModel" placeholder="contoh: gemini-2.5-flash-preview">
+    </div>
+  </section>
+
+  <main class="grid">
+
+    <div class="col">
+      <div class="col-head">
+        <h2>Naskah asli</h2>
+        <span class="count" id="inCount">0 kata</span>
+      </div>
+      <div class="col-body">
+        <textarea id="originalText" placeholder="Tempel artikel atau teks mentah kamu di sini..."></textarea>
+
+        <div class="ink-divider" style="margin-top:20px;"></div>
+
+        <fieldset>
+          <legend>Gaya penulisan</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="styleSelect">Gaya bahasa</label>
+              <select id="styleSelect">
+                <option value="santai" selected>Santai & ngobrol</option>
+                <option value="semiformal">Semi-formal</option>
+                <option value="storytelling">Storytelling</option>
+                <option value="formal">Formal informatif</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="povSelect">Sudut pandang</label>
+              <select id="povSelect">
+                <option value="orang_kedua" selected>Sapa pembaca ("kamu")</option>
+                <option value="orang_pertama">Orang pertama ("aku/saya")</option>
+                <option value="netral">Netral</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="lengthSelect">Panjang artikel</label>
+              <select id="lengthSelect">
+                <option value="sama" selected>Pertahankan panjang asli</option>
+                <option value="ringkas">Ringkas / persingkat</option>
+                <option value="perluas">Perluas & tambah detail</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="varietySelect">Variasi struktur kalimat</label>
+              <select id="varietySelect">
+                <option value="sedang" selected>Sedang</option>
+                <option value="rendah">Rendah</option>
+                <option value="tinggi">Tinggi (paling manusiawi)</option>
+              </select>
+            </div>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="chkSubheading" checked>
+            <label style="margin:0;text-transform:none;font-weight:400;font-size:14px;" for="chkSubheading">Tambahkan sub-judul otomatis di bagian yang relevan</label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="chkRhetoric" checked>
+            <label style="margin:0;text-transform:none;font-weight:400;font-size:14px;" for="chkRhetoric">Sisipkan sapaan & pertanyaan retoris agar terasa mengobrol</label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="chkNoCliche" checked>
+            <label style="margin:0;text-transform:none;font-weight:400;font-size:14px;" for="chkNoCliche">Hindari klise & frasa pembuka khas AI (mis. "di era digital ini")</label>
+          </div>
+          <div class="check-row">
+            <input type="checkbox" id="chkMeta">
+            <label style="margin:0;text-transform:none;font-weight:400;font-size:14px;" for="chkMeta">Sertakan saran meta description SEO di akhir hasil</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Optimasi SEO</legend>
+          <div class="field">
+            <label for="kwMain">Kata kunci utama</label>
+            <input type="text" id="kwMain" placeholder="contoh: resep nasi goreng kampung">
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label for="kwSupport">Kata kunci pendukung (pisahkan koma)</label>
+            <input type="text" id="kwSupport" placeholder="contoh: nasi goreng enak, masakan rumahan">
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label for="ctaText">Penutup / CTA khusus (opsional)</label>
+            <input type="text" id="ctaText" placeholder="contoh: ajak pembaca coba resepnya dan tinggalkan komentar">
+          </div>
+        </fieldset>
+
+        <button class="primary" id="generateBtn">Generate artikel organik</button>
+        <div id="statusMsg"></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-head">
+        <h2>Hasil organik</h2>
+        <span class="count" id="outCount">0 kata</span>
+      </div>
+      <div class="col-body">
+        <div id="outputBox" contenteditable="true"></div>
+        <div class="stats-row">
+          <div class="stat"><b id="statWords">0</b>kata</div>
+          <div class="stat"><b id="statRead">0 mnt</b>estimasi baca</div>
+          <div class="stat"><b id="statReadability">–</b>indeks keterbacaan</div>
+        </div>
+        <div class="btn-row">
+          <button id="copyBtn">Salin teks</button>
+          <button id="downloadTxt">Unduh .txt</button>
+          <button id="downloadMd">Unduh .md</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="note">Tool ini memanggil Gemini API langsung dari browser kamu memakai API key milikmu sendiri. Tidak ada teks yang disimpan di server manapun.</footer>
+</div>
+
+<script>
+const modelSelect = document.getElementById('modelSelect');
+const customModelWrap = document.getElementById('customModelWrap');
+modelSelect.addEventListener('change', () => {
+  customModelWrap.style.display = modelSelect.value === 'custom' ? 'block' : 'none';
+});
+
+const temperature = document.getElementById('temperature');
+const tempOut = document.getElementById('tempOut');
+temperature.addEventListener('input', () => tempOut.textContent = temperature.value);
+
+const originalText = document.getElementById('originalText');
+const inCount = document.getElementById('inCount');
+function countWords(str){
+  const t = str.trim();
+  return t.length ? t.split(/\s+/).length : 0;
+}
+originalText.addEventListener('input', () => {
+  inCount.textContent = countWords(originalText.value) + ' kata';
+});
+
+const outputBox = document.getElementById('outputBox');
+const outCount = document.getElementById('outCount');
+const statWords = document.getElementById('statWords');
+const statRead = document.getElementById('statRead');
+const statReadability = document.getElementById('statReadability');
+
+function countSyllablesID(word){
+  const w = word.toLowerCase().replace(/[^a-z]/g,'');
+  const matches = w.match(/[aiueo]+/g);
+  return matches ? matches.length : 1;
+}
+
+function updateOutputStats(){
+  const text = outputBox.innerText || '';
+  const words = text.trim().length ? text.trim().split(/\s+/) : [];
+  const wordCount = words.length;
+  outCount.textContent = wordCount + ' kata';
+  statWords.textContent = wordCount;
+  statRead.textContent = Math.max(1, Math.round(wordCount / 200)) + ' mnt';
+
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentCount = sentences.length || 1;
+  let syllables = 0;
+  words.forEach(w => syllables += countSyllablesID(w));
+  if(wordCount > 0){
+    const asl = wordCount / sentCount;
+    const asw = syllables / wordCount;
+    let score = 206.835 - (1.015 * asl) - (84.6 * asw);
+    score = Math.max(0, Math.min(100, Math.round(score)));
+    let label = 'Sulit';
+    if(score >= 80) label = 'Sangat mudah';
+    else if(score >= 60) label = 'Mudah';
+    else if(score >= 40) label = 'Sedang';
+    statReadability.textContent = score + ' · ' + label;
+  } else {
+    statReadability.textContent = '–';
+  }
+}
+
+const statusMsg = document.getElementById('statusMsg');
+function setStatus(type, msg){
+  statusMsg.className = type;
+  statusMsg.textContent = msg;
+  if(type === ''){ statusMsg.style.display = 'none'; }
+}
+
+function buildPrompt(){
+  const original = originalText.value.trim();
+  const style = document.getElementById('styleSelect').value;
+  const pov = document.getElementById('povSelect').value;
+  const length = document.getElementById('lengthSelect').value;
+  const variety = document.getElementById('varietySelect').value;
+  const subheading = document.getElementById('chkSubheading').checked;
+  const rhetoric = document.getElementById('chkRhetoric').checked;
+  const noCliche = document.getElementById('chkNoCliche').checked;
+  const meta = document.getElementById('chkMeta').checked;
+  const kwMain = document.getElementById('kwMain').value.trim();
+  const kwSupport = document.getElementById('kwSupport').value.trim();
+  const cta = document.getElementById('ctaText').value.trim();
+
+  const styleMap = {
+    santai: 'santai, ngobrol, seperti teman yang berbagi cerita',
+    semiformal: 'semi-formal, tetap ramah namun rapi',
+    storytelling: 'storytelling, mengalir seperti bercerita dengan alur',
+    formal: 'formal dan informatif, tetap enak dibaca'
+  };
+  const povMap = {
+    orang_kedua: 'sudut pandang orang kedua, sering menyapa pembaca dengan "kamu"',
+    orang_pertama: 'sudut pandang orang pertama, seperti penulis berbagi pengalaman pribadi',
+    netral: 'sudut pandang netral tanpa menyapa langsung'
+  };
+  const lengthMap = {
+    sama: 'pertahankan panjang artikel sekitar sama dengan naskah asli',
+    ringkas: 'persingkat menjadi lebih ringkas dan padat tanpa kehilangan inti',
+    perluas: 'perluas dengan detail, contoh, atau penjelasan tambahan yang relevan'
+  };
+  const varietyMap = {
+    rendah: 'variasi struktur kalimat rendah, konsisten dan sederhana',
+    sedang: 'variasi panjang dan struktur kalimat sedang, campuran kalimat pendek dan panjang',
+    tinggi: 'variasi struktur kalimat tinggi: campur kalimat pendek, panjang, dan pola non-monoton agar terasa sangat manusiawi dan tidak mengikuti pola berulang khas tulisan AI'
+  };
+
+  let instructions = [];
+  instructions.push('Tulis ulang artikel berikut menjadi versi yang organik, humanis, dan nyaman dibaca.');
+  instructions.push('Gaya bahasa: ' + styleMap[style] + '.');
+  instructions.push('Gunakan ' + povMap[pov] + '.');
+  instructions.push(lengthMap[length].charAt(0).toUpperCase() + lengthMap[length].slice(1) + '.');
+  instructions.push('Gunakan ' + varietyMap[variety] + '.');
+  if(subheading) instructions.push('Tambahkan sub-judul singkat di bagian-bagian yang relevan untuk memudahkan pembaca menyusuri artikel.');
+  if(rhetoric) instructions.push('Sisipkan sapaan ke pembaca dan sesekali pertanyaan retoris agar terasa seperti obrolan, bukan laporan.');
+  if(noCliche) instructions.push('Hindari klise dan frasa pembuka generik khas tulisan AI, seperti "di era digital ini", "dalam dunia yang serba cepat ini", "kesimpulannya adalah". Buka dan tutup artikel dengan cara yang spesifik dan segar.');
+  instructions.push('Jaga agar tulisan tetap natural secara SEO, bukan sekadar menumpuk kata kunci — sisipkan kata kunci secara wajar dalam kalimat.');
+  if(kwMain) instructions.push('Kata kunci utama yang wajib muncul beberapa kali secara natural: "' + kwMain + '".');
+  if(kwSupport) instructions.push('Kata kunci pendukung/turunan yang bisa diselipkan secara wajar: ' + kwSupport + '.');
+  if(cta) instructions.push('Tutup artikel dengan: ' + cta + '.');
+  if(meta) instructions.push('Setelah artikel selesai, tambahkan baris baru berjudul "Meta description:" diikuti satu kalimat meta description SEO (maksimal 160 karakter).');
+  instructions.push('Keluarkan hanya hasil artikel akhir (dan meta description jika diminta), tanpa basa-basi, tanpa catatan tambahan, tanpa tanda kutip pembuka/penutup, dan tanpa menyebut bahwa ini hasil tulisan ulang.');
+
+  const systemPrompt = 'Kamu adalah editor dan penulis konten berpengalaman berbahasa Indonesia yang ahli membuat tulisan terasa manusiawi, organik, dan enak dibaca, sekaligus tetap SEO-friendly.';
+  const userPrompt = instructions.join(' ') + '\n\nNaskah asli:\n"""\n' + original + '\n"""';
+
+  return { systemPrompt, userPrompt };
+}
+
+async function generateArticle(){
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const original = originalText.value.trim();
+  let model = modelSelect.value;
+  if(model === 'custom'){
+    model = document.getElementById('customModel').value.trim();
+  }
+
+  if(!apiKey){ setStatus('error', 'Masukkan API key Google AI Studio terlebih dahulu.'); return; }
+  if(!original){ setStatus('error', 'Tempel naskah asli terlebih dahulu di kolom kiri.'); return; }
+  if(!model){ setStatus('error', 'Isi nama model kustom terlebih dahulu.'); return; }
+
+  const generateBtn = document.getElementById('generateBtn');
+  generateBtn.disabled = true;
+  setStatus('loading', 'Sedang menyusun artikel organik, mohon tunggu sebentar...');
+
+  const { systemPrompt, userPrompt } = buildPrompt();
+  const temp = parseFloat(temperature.value);
+
+  try{
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+        generationConfig: { temperature: temp }
+      })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+      const errMsg = (data && data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status);
+      setStatus('error', 'Gagal memanggil Gemini API: ' + errMsg);
+      generateBtn.disabled = false;
+      return;
+    }
+
+    const candidate = data && data.candidates && data.candidates[0];
+    const parts = candidate && candidate.content && candidate.content.parts;
+    const resultText = parts && parts.length ? parts.map(p => p.text || '').join('') : '';
+
+    if(!resultText){
+      setStatus('error', 'Respons kosong dari model. Coba lagi atau ganti model.');
+      generateBtn.disabled = false;
+      return;
+    }
+
+    outputBox.innerText = resultText.trim();
+    updateOutputStats();
+    setStatus('ok', 'Artikel organik berhasil dibuat. Kamu bisa mengedit langsung di kolom hasil sebelum menyalin atau mengunduh.');
+  } catch(err){
+    setStatus('error', 'Terjadi kesalahan jaringan: ' + err.message + '. Periksa koneksi atau API key kamu.');
+  } finally {
+    generateBtn.disabled = false;
+  }
+}
+
+document.getElementById('generateBtn').addEventListener('click', generateArticle);
+
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  const text = outputBox.innerText;
+  if(!text.trim()){ setStatus('error', 'Belum ada hasil untuk disalin.'); return; }
+  try{
+    await navigator.clipboard.writeText(text);
+    setStatus('ok', 'Teks berhasil disalin ke clipboard.');
+  } catch(e){
+    setStatus('error', 'Gagal menyalin otomatis, silakan blok teks lalu salin manual.');
+  }
+});
+
+function downloadFile(filename, content){
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('downloadTxt').addEventListener('click', () => {
+  const text = outputBox.innerText;
+  if(!text.trim()){ setStatus('error', 'Belum ada hasil untuk diunduh.'); return; }
+  downloadFile('artikel-organik.txt', text);
+});
+
+document.getElementById('downloadMd').addEventListener('click', () => {
+  const text = outputBox.innerText;
+  if(!text.trim()){ setStatus('error', 'Belum ada hasil untuk diunduh.'); return; }
+  downloadFile('artikel-organik.md', text);
+});
+
+outputBox.addEventListener('input', updateOutputStats);
+</script>
+</body>
+</html>
